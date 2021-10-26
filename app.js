@@ -1,4 +1,3 @@
-// var createError = require('http-errors');
 var express = require('express');
 var session = require('express-session');
 var flash = require('connect-flash');
@@ -6,7 +5,6 @@ const { MongoClient } = require('mongodb');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-// var favicon = require('server-favicon');
 var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var app = express();// express实例

@@ -35,6 +35,7 @@ User.prototype.save = function (callback) {
                 if(err){
                     return callback(err)
                 }
+                console.log(user)
                 callback(null, user[0])
             })
         })
@@ -44,19 +45,23 @@ User.prototype.save = function (callback) {
 
     User.get = function (name, callback){
         mongodb.open(function (err, db){
-            if(err){
-                mongodb.close()
-                return callback(err)
-            }
-            collection.findOne({
-                name: name
-            }, function(err, user){
-                mongodb.close()
+            
+            db.collection('users', function (err, fllection) {
                 if(err){
+                    mongodb.close()
                     return callback(err)
                 }
-                callback(null, user)
+                collection.findOne({
+                    name: name
+                }, function(err, user){
+                    mongodb.close()
+                    if(err){
+                        return callback(err)
+                    }
+                    callback(null, user)
+                })
             })
+            
         })
     }
 }
