@@ -1,7 +1,7 @@
 // var createError = require('http-errors');
 var express = require('express');
 var session = require('express-session');
-var MongoStore = require('connect-mongo');
+var flash = require('connect-flash');
 const { MongoClient } = require('mongodb');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var app = express();// express实例
 
+var settings = require('./settings')
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));// 视图文件存放目录
 app.set('view engine', 'ejs');// 视图模板引擎
@@ -40,6 +41,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+app.use(flash);
 
 const url = 'mongodb://localhost:27017';
 const client = new MongoClient(url);
