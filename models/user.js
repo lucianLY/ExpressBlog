@@ -1,6 +1,6 @@
 var mongodb = require('./db')
 
-function User(user){
+function User(user) {
     this.name = user.name
     this.password = user.password
     this.email = user.email
@@ -9,7 +9,7 @@ function User(user){
 module.exports = User
 
 //存储用户信息
-User.prototype.save = function (callback) {
+User.prototype.save = function(callback) {
     // 要存储数据库的用户文档
     var user = {
         user: this.name,
@@ -18,21 +18,21 @@ User.prototype.save = function (callback) {
     }
 
     //打开数据库
-    mongodb.open(function (err, db){
-        if(err){
+    mongodb.open(function(err, db) {
+        if (err) {
             return callback(err)
         }
         // 读取 users 
-        db.collection('users', function(err, collection){
-            if(err){
+        db.collection('users', function(err, collection) {
+            if (err) {
                 mongodb.close()
                 return callback(err)
             }
-            collection.insert(user,{
+            collection.insert(user, {
                 safe: true
-            }, function(err, user){
+            }, function(err, user) {
                 mongodb.close()
-                if(err){
+                if (err) {
                     return callback(err)
                 }
                 console.log(user)
@@ -40,28 +40,29 @@ User.prototype.save = function (callback) {
             })
         })
     })
+}
 
-    // 读取数据信息
-
-    User.get = function (name, callback){
-        mongodb.open(function (err, db){
-            
-            db.collection('users', function (err, fllection) {
-                if(err){
-                    mongodb.close()
+// 读取数据信息
+User.get = function(name, callback) {
+    mongodb.open(function(err, db) {
+        if (err) {
+            return callback(err)
+        }
+        db.collection('users', function(err, collection) {
+            if (err) {
+                mongodb.close()
+                return callback(err)
+            }
+            collection.findOne({
+                name: name
+            }, function(err, user) {
+                mongodb.close()
+                if (err) {
                     return callback(err)
                 }
-                collection.findOne({
-                    name: name
-                }, function(err, user){
-                    mongodb.close()
-                    if(err){
-                        return callback(err)
-                    }
-                    callback(null, user)
-                })
+                callback(null, user)
             })
-            
         })
-    }
+
+    })
 }
