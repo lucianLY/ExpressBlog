@@ -1,7 +1,7 @@
-var crypto = require('crypto'),
-    User = require('../models/user.js')
-
-// module.exports = router;
+var crypto = require('crypto')
+    //     User = require('../models/user.js')
+var User = require('../models/user')
+    // module.exports = router;
 module.exports = function(app) {
     app.get('/', function(req, res) {
         res.render('index', { title: 'Express' });
@@ -25,32 +25,18 @@ module.exports = function(app) {
         }
         const md5 = crypto.createHash('md5');
         var passwordMd5 = md5.update(req.body.password).digest('hex')
-        var newUser = new User({
+        var param = {
             name: name,
             password: passwordMd5,
             email: email
-        })
+        }
 
-        User.get(newUser.name, function(err, user) {
-            console.log(newUser.name)
+        User.create(param, function(err, doc) {
             if (err) {
-                req.flash('error', err)
-                return res.redirect('/')
+                console.log(err)
             }
-            if (user) {
-                req.flash('error', '用户已存在')
-                return res.redirect('/reg')
-            }
-            newUser.save(function(err, user) {
-                if (err) {
-                    req.flash('error', err)
-                    return res.redirect('/reg')
-                }
-                req.session.user = user;
-                req.flash('success', '注册成功')
-                res.redirect('/')
-            })
-
+            console.log(param)
+            return res.redirect('/reg')
         })
     })
 
