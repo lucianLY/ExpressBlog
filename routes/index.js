@@ -35,7 +35,7 @@ module.exports = function(app) {
             if (err) {
                 console.log(err)
             }
-            console.log(param)
+            console.log('添加成功', doc)
             return res.redirect('/reg')
         })
     })

@@ -8,4 +8,4 @@ var user = new Schema({
     'email': String
 })
 
-module.exports = mongoose.model('user', user)
+module.exports = mongoose.model('blog', user)
