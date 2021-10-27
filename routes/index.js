@@ -1,7 +1,6 @@
 var crypto = require('crypto')
-    //     User = require('../models/user.js')
 var User = require('../models/user')
-    // module.exports = router;
+
 module.exports = function(app) {
     app.get('/', function(req, res) {
         res.render('index', { title: 'Express' });
@@ -31,6 +30,12 @@ module.exports = function(app) {
             email: email
         }
 
+        User.find({ 'name': name }).then(result => {
+            if (result) { //用户已存在
+                req.flash('error', '用户已存在')
+                return res.redirect('/reg')
+            }
+        })
         User.create(param, function(err, doc) {
             if (err) {
                 console.log(err)
